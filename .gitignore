@@ -1,0 +1,9 @@
+sqlite3.db
+*.egg-info
+dist
+build
+RELEASE-VERSION
+
+# Various IDE Junk:
+*.komodoproject
+*.esprj
