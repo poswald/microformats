@@ -1,0 +1,8 @@
+# Requirements for this project. You can append these to your own
+# project's requirements.txt file and/or run it through pip:
+#
+# pip install -r requirements.txt
+#
+
+#Python Imaging Library (used for ImageFields)
+pil

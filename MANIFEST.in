@@ -1,0 +1,7 @@
+include MANIFEST.in
+include *.md
+include *.txt
+include *.py
+include RELEASE-VERSION
+recursive-include microformats *
+
