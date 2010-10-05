@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 from distutils.util import convert_path
 from distutils.command.install import INSTALL_SCHEMES
-from version import get_git_version
+from microformats import VERSION
 
 # Tell distutils to put the data_files in platform-specific installation
 # locations. See here for an explanation:
@@ -47,7 +47,7 @@ for dirpath, dirnames, filenames in os.walk(django_dir):
 
 setup(
     name='microformats',
-    version=get_git_version(),
+    version=VERSION,
     author='Paul Oswald',
     author_email='pauloswald@gmail.com',
     packages=packages,
