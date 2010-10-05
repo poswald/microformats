@@ -1,10 +1,10 @@
-# Django Microformat Application v0.1 (alpha)
+# Django Microformat Application (alpha)
 
-    (c) 2009 Nicholas H.Tollervey (http://ntoll.org/contact)
+    (c) 2009 Nicholas H.Tollervey and others
 
-See the file LICENSE.txt for the licensing terms and conditions.
+See the file AUTHORS.txt and LICENSE.txt for the licensing terms and conditions.
 
-## description
+## Description
 
 This Django application makes it easier to integrate and use
 Microformats in your web-application.
@@ -61,8 +61,52 @@ hReview and XFN microformats (templatetags/microformat_extras.py).
 
 * Some example templates for rendering the microformats (templates/*.html)
 
-To use the template filters you need to register the application and
-add:
+### Installation
+
+Use pip to install the application. You can install directly from a github repo:
+
+    $ pip install -e git+git://github.com/poswald/microformats.git#egg=microformats
+
+Once installed, you can check the version:
+
+    $ pip freeze | grep microformats
+    -e git+git@github.com:poswald/microformats.git@caeba...#egg=microformats-0.0.2-py2.6-dev
+
+You can see it is pointing to a particular commit in github. If you want to do
+development work on this project in particular, you can install a git project from
+the local filesystem instead:
+
+    $ cd Projects/microformats
+	$ pip install -e .
+
+Add the microformats project into your settings.py:
+
+    INSTALLED_APPS = (
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.sites',
+	'django.contrib.admin',
+	'django.contrib.admindocs',
+	...
+	'microformats',
+	...)
+
+And now, simply run syncdb:
+
+    $ ./manage.py syncdb
+	Syncing...
+    Creating table microformats_hcard
+    Creating table microformats_hcalendar_organizers
+    Creating table microformats_hcalendar_contacts
+	...
+
+You should now be ready to go.
+
+
+### Usage
+
+To use the template filters you need to add:
 
     {% load microformat_extras %}
 
@@ -193,7 +237,7 @@ in the following constants in the settings.py file of your project:
 
 For more examples check out the end of the following test file:
 
-    microformats/unit_tests/test_templatetags.py
+    microformats/tests/test_templatetags.py
 
 and take a look at:
 
@@ -203,13 +247,11 @@ Running the unit tests (./manage.py test microformats) will result in
 an example file demonstrating the HTML markup produced by the template
 filters:
 
-    microformats/unit_tests/html_test/microformat_test.html
+    microformats/tests/html_test/microformat_test.html
 
-I've included the Oomph javascript library so you can play with the
-microformats. A more fully featured library is the Operator add-on for
-Firefox.  IE8 will support Microformats natively.
+The Oomph javascript library has been included so you can play with the
+microformats.
 
-Feedback is most welcome by sending email to the contact details found
-here:
+Please see http://microformats.org/wiki/browsers for a list of browser extensions
 
-    http://ntoll.org/contact
+Feedback is most welcome

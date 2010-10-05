@@ -1,4 +1,4 @@
-Copyright (c) 2009 Nicholas H.Tollervey (http://ntoll.org/contact)
+Copyright (c) 2009 Nicholas H.Tollervey and others
 
 All rights reserved.
 

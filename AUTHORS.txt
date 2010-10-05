@@ -1,0 +1,9 @@
+This library was originally written by Nicholas H.Tollervey (http://ntoll.org/contact)
+
+Please append yourself to this list if you have made a significant
+contribution to the application. The following is a list of contributors:
+
+Nicholas Tollervey <ntoll@ntoll.org>
+Ben Welsh <benwelsh@tuohy.local>
+Gabriel Falcão <gabriel@nacaolivre.org>
+Paul Oswald <pauloswald@gmail.com>
