@@ -61,6 +61,25 @@ hReview and XFN microformats (templatetags/microformat_extras.py).
 
 * Some example templates for rendering the microformats (templates/*.html)
 
+
+### A Note About Versions
+
+The structure of this branch (poswald/microformats) is substantially different
+than the original project (ntoll/microformats). Please be careful when updating.
+
+Changes to the database or API will be reflected in an incrementing minor number:
+
+    microformats-0.X.0
+
+Relatively small changes will be reflected in the micro number:
+
+    microformats-0.0.X
+
+The current code release number will be pulled from tags on the git repo or in
+packaged versions will be determined by a RELEASE-VERSION file. Please do not
+check in the RELEASE-VERSION file.
+
+
 ### Installation
 
 Use pip to install the application. You can install directly from a github repo:
