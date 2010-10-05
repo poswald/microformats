@@ -64,11 +64,9 @@ class TemplateTagsTestCase(TestCase):
 
         def test_fragment(self):
             """
-            The fragment function being exercised
+            Test that an unknown arg results in the return of the raw value in
+            an appropriatly formatted span.
             """
-            # Test that an unknown arg results in the return of the raw value in
-            # an appropriatly formatted span
-
             # Generic call results in the span
             result = fragment("foo", arg="bar", autoescape=True)
             expected = u'<span class="bar">foo</span>'
