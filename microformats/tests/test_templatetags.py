@@ -230,9 +230,9 @@ class TemplateTagsTestCase(TestCase):
             hc.honorific_prefix = ''
             hc.additional_name = ''
             hc.honorific_suffix = ''
-	    hc.tel_work = ''
-	    hc.tel_home = ''
-	    hc.save()
+            hc.tel_work = ''
+            hc.tel_home = ''
+            hc.save()
             result = hcard(hc, autoescape=True)
             expected = u'\n<div id="hcard_1" class="vcard">\n    <div class="fn n">\n        \n        \n            \n            <span class="given-name">Joe</span>\n            \n            <span class="family-name">Blogs</span>\n            \n        \n        \n    </div>\n    \n    \n    \n    \n     \n     \n    \n<div class="adr">\n    \n    \n    \n    \n    \n    \n</div>\n\n    \n    \n    \n</div>\n'
             self.assertEquals(expected, result)
