@@ -12,7 +12,7 @@ import os
 
 # django
 from django.test.client import Client
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.template import Context, Template
 from django.template.loader import get_template
 from django.contrib.auth.models import User
@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 import microformats.models 
 from microformats.templatetags.microformat_extras import *
 
-class TemplateTagsTestCase(TestCase):
+class TemplateTagsTestCase(TransactionTestCase):
         """
         Testing custom templatetags 
         """
@@ -280,6 +280,11 @@ class TemplateTagsTestCase(TestCase):
             hc.postal_code = 'W1A 1AA'
             hc.save()
             result = hcal(hc, autoescape=True)
+
+            # TODO: These expected results should not assume an id of 1. This is why we
+            # have to use the slower TransactionTestCase instead of TestCase. This needs to be
+            # replaced. See http://docs.djangoproject.com/en/dev/topics/testing/#django.test.TransactionTestCase
+
             expected = u'\n<div id="hcalendar_1" class="vevent">\n    <a href="http://www.bbc.co.uk/" class="url">\n        \n        <abbr title="2009-04-11T13:30:00" class="dtstart">Sat 11 Apr 2009 1:30 p.m.</abbr>\n        \n        \n            &nbsp;-&nbsp;\n            \n            <abbr title="2009-04-11T15:30:00" class="dtend">All day event</abbr>\n            \n        \n        :&nbsp;\n        <span class="summary">Important Meeting</span>\n         at <span class="location">BBC in London</span>\n    </a>\n    \n<div class="adr">\n    <div class="street-address">Broadcasting House</div>\n    <div class="extended-address">Portland Place</div>\n    <span class="locality">London</span>&nbsp;\n    \n    <span class="postal-code">W1A 1AA</span>&nbsp;\n    <span class="country-name">United Kingdom</span>\n</div>\n\n    <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>    \n</div>\n'
             self.assertEquals(expected, result)
             # Make sure things render correctly *if* all_day_event = True
