@@ -613,7 +613,7 @@ class hCard(LocationAwareMicroformat):
 
     def fn(self, is_org=False):
         """
-        Formatted Name
+        Formatted Name as unicode
 
         An entity has only one "best" / most preferred way of formatting their
         name, and legally organizations have only a single name, thus "fn" is
@@ -622,18 +622,18 @@ class hCard(LocationAwareMicroformat):
         name = self.n()
         if not name:
             if org:
-                return org
+                return unicode(org)
             else:
                 return _('None')
         else:
-            return name
+            return unicode(name)
 
     class Meta:
         verbose_name = _('hCard')
         verbose_name_plural = _('hCards')
 
     def __unicode__(self):
-        return self.fn() or u'None'
+        return unicode(self.fn()) or u'None'
 
 class hCalendar(LocationAwareMicroformat):
     """
