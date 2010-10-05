@@ -39,10 +39,11 @@ from django.template import Template, Context
 from django import template
 from django.template.loader import select_template
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import email_re, URLValidator
 from django.utils.translation import ugettext as _
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from django.forms.fields import email_re, url_re
 # We'll be using all the models at some point or other
 import microformats.models
 import datetime
@@ -81,7 +82,12 @@ def is_valid_url(url):
     
     (We use the regex Django uses to define a URL)
     """
-    return True if url_re.match(url) else False
+    try:
+        validator = URLValidator()
+        validator(url)
+    except ValidationError, e:
+        return False
+    return True
 
 def fragment(value, arg, autoescape=None):
     """
