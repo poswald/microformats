@@ -156,9 +156,9 @@ class hCardForm(LocationAwareForm):
         # if the user hasn't supplied either and organization name or provided
         # at least a nickname or a given name then raise an error
         if not (org or nickname or given_name):
-            raise forms.ValidationError("You must supply some sort of namimg"\
-                    " information (given name or nickname"\
-                    " or an organization name)")
+            raise forms.ValidationError(_("You must supply a name. "\
+                    " (given name, family name, nickname"\
+                    " or an organization name)"))
         return cleaned_data
     
     class Meta:
