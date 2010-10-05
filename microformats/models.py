@@ -599,17 +599,17 @@ class hCard(LocationAwareMicroformat):
         additional-name(s)) and single family-name, thus, only a single "n"
         property is permitted.
         """
-        name = ' '.join((i for i in (
+        name = u' '.join((i for i in (
             self.given_name,
             self.additional_name,
             self.family_name) if i.strip()))
         if name:
-            return ' '.join((i for i in(
+            return u' '.join((i for i in(
                 self.honorific_prefix,
                 name,
                 self.honorific_suffix) if i.strip()))
         else:
-            return '' 
+            return u''
 
     def fn(self, is_org=False):
         """
@@ -633,7 +633,7 @@ class hCard(LocationAwareMicroformat):
         verbose_name_plural = _('hCards')
 
     def __unicode__(self):
-        return self.fn()
+        return self.fn() or u'None'
 
 class hCalendar(LocationAwareMicroformat):
     """
@@ -991,10 +991,10 @@ class geo(models.Model):
         verbose_name_plural = _('Geolocations')
 
     def __unicode__(self):
-        return ' '.join((
-            'lat', 
+        return u' '.join((
+            u'lat',
             str(self.latitude), 
-            'long', 
+            u'long',
             str(self.longitude)
             ))
 
@@ -1438,7 +1438,7 @@ class hCardComplete(models.Model):
                 name,
                 self.honorific_suffix) if i.strip()))
         else:
-            return '' 
+            return u''
 
     def fn(self, is_org=False):
         """
@@ -1453,7 +1453,7 @@ class hCardComplete(models.Model):
         name, and legally organizations have only a single name, thus "fn" is
         singular. 
         """
-        result = ''
+        result = u''
         if is_org:
             o = self.org_set.filter(primary=True).order_by('id')
             if o:
@@ -1890,7 +1890,7 @@ class org(models.Model):
 
     def __unicode__(self):
         if self.unit:
-            return self.unit+', '+self.name
+            return u'%s, %s' % (self.unit, self.name)
         else:
             return self.name
 
