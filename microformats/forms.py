@@ -223,12 +223,13 @@ class AdrForm(forms.ModelForm):
 
     http://microformats.org/code/hcard/creator
     """
-    def __init__(self, *args, **kwargs): 
-        super(AdrForm, self).__init__(*args, **kwargs) 
-        self.fields['types'].widget = forms.CheckboxSelectMultiple()
-        self.fields['types'].label = _('Address Type')
-        self.fields['types'].help_text = _('Please select as many that apply')
-        self.fields['types'].queryset = adr_type.objects.all()
+    def __init__(self, *args, **kwargs):
+        super(AdrForm, self).__init__(*args, **kwargs)
+        if 'types' in self.fields:
+            self.fields['types'].widget = forms.CheckboxSelectMultiple()
+            self.fields['types'].label = _('Address Type')
+            self.fields['types'].help_text = _('Please select as many that apply')
+            self.fields['types'].queryset = adr_type.objects.all()
 
     class Meta:
         model = adr
