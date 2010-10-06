@@ -1539,6 +1539,12 @@ class adr(models.Model):
     vCard standard (RFC2426) in HTML, one of several open microformat standards.
     It is also a property of hCard. 
     """
+    country_name = models.CharField(
+            _('Country'),
+            max_length=3,
+            choices = COUNTRY_LIST,
+            blank=True
+            )
     street_address = models.CharField(
             _('Street Address'), 
             max_length=128, 
@@ -1557,12 +1563,6 @@ class adr(models.Model):
     region = models.CharField(
             _('County / State'), 
             max_length=128, 
-            blank=True
-            )
-    country_name = models.CharField(
-            _('Country'), 
-            max_length=3, 
-            choices = COUNTRY_LIST, 
             blank=True
             )
     postal_code = models.CharField(
