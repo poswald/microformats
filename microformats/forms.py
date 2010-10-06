@@ -128,13 +128,6 @@ class hCardForm(LocationAwareForm):
     conjunction with the AdrForm, OrgForm, EmailForm and TelForm to build
     something more complex. 
 
-    This form assumes the hCard will be for a person (rather than an
-    organisation) - so the constructor sets the given_name as a required field
-    so we always get a valid fn.
-
-    Don't use this form for hCards relating to organisations only (that don't
-    require personal name details like this form does).
-    
     Inspired by:
 
     http://microformats.org/code/hcard/creator
