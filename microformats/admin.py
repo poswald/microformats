@@ -2,6 +2,10 @@
 from django.contrib import admin
 from models import *
 
+class orgInline(admin.TabularInline):
+    model = org
+    extra = 1
+
 class geoAdmin(admin.ModelAdmin):
     """ Django admin class for geo microformat """
     list_filter = ('latitude', 'longitude')
@@ -14,6 +18,14 @@ class hCardAdmin(admin.ModelAdmin):
     list_filter = ('family_name', 'org')
     save_on_top = True
     search_fields = ('given_name', 'family_name', 'org')
+
+class hCardCompleteAdmin(admin.ModelAdmin):
+    """ Django admin class for nested/normalized hCard format """
+    save_on_top = True
+    list_display = ('__unicode__', 'url')
+    inlines = [
+        orgInline,
+    ]
 
 class hCalendarAdmin(admin.ModelAdmin):
     """ Django admin class for flat hCalendar microformat """
@@ -63,6 +75,7 @@ class hNewsAdmin(admin.ModelAdmin):
 
 admin.site.register(geo, geoAdmin)
 admin.site.register(hCard, hCardAdmin)
+admin.site.register(hCardComplete, hCardCompleteAdmin)
 admin.site.register(hCalendar, hCalendarAdmin)
 admin.site.register(hListing, hListingAdmin)
 admin.site.register(hReview, hReviewAdmin)
