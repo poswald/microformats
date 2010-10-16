@@ -622,11 +622,11 @@ class hCard(LocationAwareMicroformat):
         name = self.n()
         if not name:
             if org:
-                return unicode(org)
+                return u"%s" % org
             else:
                 return _('None')
         else:
-            return unicode(name)
+            return u"%s" % name
 
     class Meta:
         verbose_name = _('hCard')
@@ -1892,7 +1892,7 @@ class org(models.Model):
         if self.unit:
             return u'%s, %s' % (self.unit, self.name)
         else:
-            return self.name
+            return u"%s" % self.name
 
 
 class note(models.Model):
