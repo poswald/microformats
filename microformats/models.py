@@ -1547,6 +1547,11 @@ class adr(models.Model):
             choices = COUNTRY_LIST,
             blank=True
             )
+    post_office_box = models.CharField(
+            _('Post Office Box'),
+            max_length=32,
+            blank=True
+            )
     street_address = models.CharField(
             _('Street Address'), 
             max_length=128, 
@@ -1572,11 +1577,7 @@ class adr(models.Model):
             max_length=32, 
             blank=True
             )
-    post_office_box = models.CharField(
-            _('Post Office Box'),
-            max_length=32,
-            blank=True
-            )
+
     types = models.ManyToManyField(adr_type)
     hcard = models.ForeignKey(hCardComplete, null=True)
 
