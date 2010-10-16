@@ -1282,6 +1282,73 @@ class hNews(hEntry, LocationAwareMicroformat):
             return None
 
 
+class org(models.Model):
+    """
+    Represents the organisation data associated with an hCardComplete microformat instance.
+
+    See:
+
+    http://microformats.org/wiki/hcard
+
+    """
+    hcard = models.ForeignKey('hCardComplete')
+    name = models.CharField(
+            _('Organization Name'),
+            max_length=256
+            )
+    unit = models.CharField(
+            _('Organizational Unit'),
+            max_length=256,
+            null=True,
+            blank=True
+            )
+    primary = models.BooleanField(
+            _('Primary organization'),
+            default=True,
+            help_text=_('This is the primary organization'\
+                    ' associated with this contact')
+            )
+    title = models.ForeignKey('title', null=True, blank=True)
+    role = models.ForeignKey('role', null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Org')
+        verbose_name_plural = _('Orgs')
+
+    def __unicode__(self):
+        if self.unit:
+            return u'%s, %s' % (self.unit, self.name)
+        else:
+            return u"%s" % self.name
+
+
+class HCardManager(models.Manager):
+    """
+    An HCardManager is used to create new hCard instances
+    """
+
+    def create_person(self, *args, **kwargs):
+        """
+        return a newly created hCardComplete model that represents an individual.
+        The individual may or may not have an associated org.
+        """
+        return self.create(*args, **kwargs)
+
+    def create_org(self, name=None, *args, **kwargs):
+        """
+        return a newly created hCardComplete model. This card will represent an
+        organization and will have a corresponding org model. In this method,
+        `name` is interpreted to be the name of the organization.
+        """
+        if not name:
+            raise AttributeError
+
+        hcard = self.model()
+        o = org(name=name, hcard=hcard)
+        hcard.save()
+        return hcard
+
+
 class hCardComplete(models.Model):
     """ 
     A full (correct) representation an hCard microformat.
@@ -1474,6 +1541,9 @@ class hCardComplete(models.Model):
             return result
         else:
             return _('None')
+
+    # set a manager for create convienience methods
+    objects = HCardManager()
 
     class Meta:
         verbose_name = _('hCard')
@@ -1858,45 +1928,6 @@ class role(models.Model):
 
     def __unicode__(self):
         return self.description
-
-class org(models.Model):
-    """
-    Represents the organisation data associated with an hCardComplete microformat instance.
-
-    See:
-
-    http://microformats.org/wiki/hcard
-    
-    """
-    hcard = models.ForeignKey(hCardComplete)
-    name = models.CharField(
-            _('Organization Name'),
-            max_length=256
-            )
-    unit = models.CharField(
-            _('Organizational Unit'),
-            max_length=256,
-            null=True,
-            blank=True
-            )
-    primary = models.BooleanField(
-            _('Primary organization'),
-            default=True,
-            help_text=_('This is the primary organization'\
-                    ' associated with this contact')
-            )
-    title = models.ForeignKey('title', null=True, blank=True)
-    role = models.ForeignKey('role', null=True, blank=True)
-
-    class Meta:
-        verbose_name = _('Org')
-        verbose_name_plural = _('Orgs')
-
-    def __unicode__(self):
-        if self.unit:
-            return u'%s, %s' % (self.unit, self.name)
-        else:
-            return u"%s" % self.name
 
 
 class note(models.Model):
