@@ -1888,8 +1888,8 @@ class org(models.Model):
     role = models.ForeignKey('role', null=True, blank=True)
 
     class Meta:
-        verbose_name = _('Organization')
-        verbose_name_plural = _('Organizations')
+        verbose_name = _('Org')
+        verbose_name_plural = _('Orgs')
 
     def __unicode__(self):
         if self.unit:
