@@ -1861,7 +1861,7 @@ class role(models.Model):
 
 class org(models.Model):
     """
-    Represents an organisation associated with an hCard microformat instance
+    Represents the organisation data associated with an hCardComplete microformat instance.
 
     See:
 
