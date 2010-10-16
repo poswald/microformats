@@ -1352,6 +1352,7 @@ class hCardComplete(models.Model):
     geo = models.ForeignKey(
             geo, 
             null=True,
+            blank=True,
             help_text=_("The 'geo' property represents the contact's actual"\
                 " location, not a coordinate approximation of an 'adr'.")
             )
@@ -1412,8 +1413,9 @@ class hCardComplete(models.Model):
     # Specifies information about other contact(s) acting on behalf of the
     # entity represented by the hCard 
     agents = models.ManyToManyField(
-            "self", 
-            symmetrical=False
+            "self",
+            symmetrical=False,
+            blank=True
             )
 
     def n(self):
@@ -1873,6 +1875,7 @@ class org(models.Model):
     unit = models.CharField(
             _('Organizational Unit'),
             max_length=256,
+            null=True,
             blank=True
             )
     primary = models.BooleanField(
@@ -1881,8 +1884,8 @@ class org(models.Model):
             help_text=_('This is the primary organization'\
                     ' associated with this contact')
             )
-    title = models.ForeignKey(title, null=True)
-    role = models.ForeignKey(role, null=True)
+    title = models.ForeignKey('title', null=True, blank=True)
+    role = models.ForeignKey('role', null=True, blank=True)
 
     class Meta:
         verbose_name = _('Organization')
