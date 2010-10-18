@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-Models for Microformats. 
+Models for Microformats.
 
 Copyright (c) 2009 Nicholas H.Tollervey (http://ntoll.org/contact)
 
@@ -81,7 +81,7 @@ TIMEZONE = (
         ('+12:00', _('+12 (NZST/IDLE)')),
         )
 
-# A list of all countries stored as (('ISO 3166'), ('Name')) 
+# A list of all countries stored as (('ISO 3166'), ('Name'))
 COUNTRY_LIST = (
         ('',_('--- Please Select ---')),
         ('GB', _('United Kingdom')),
@@ -342,7 +342,7 @@ class LocationAwareMicroformat(models.Model):
     representations of the appropriate microformats.
     """
     # This first part represents an adr Microformat.
-    # 
+    #
     # See:
     #
     # http://microformats.org/wiki/adr
@@ -351,37 +351,37 @@ class LocationAwareMicroformat(models.Model):
     # up address information, suitable for embedding in HTML, XHTML, Atom, RSS,
     # and arbitrary XML. adr is a 1:1 representation of the adr property in the
     # vCard standard (RFC2426) in HTML, one of several open microformat standards.
-    # It is also a property of hCard. 
+    # It is also a property of hCard.
     street_address = models.CharField(
-            _('Street Address'), 
-            max_length=128, 
+            _('Street Address'),
+            max_length=128,
             blank=True
-            ) 
+            )
     extended_address = models.CharField(
-            _('Extended Address'), 
-            max_length=128, 
+            _('Extended Address'),
+            max_length=128,
             blank=True
             )
     locality = models.CharField(
-            _('Town / City'), 
-            max_length=128, 
+            _('Town / City'),
+            max_length=128,
             blank=True
             )
     region = models.CharField(
-            _('County / State'), 
-            max_length=128, 
+            _('County / State'),
+            max_length=128,
             blank=True
             )
     country_name = models.CharField(
-            _('Country'), 
-            max_length=3, 
-            choices = COUNTRY_LIST, 
+            _('Country'),
+            max_length=3,
+            choices = COUNTRY_LIST,
             blank=True,
             null=True
             )
     postal_code = models.CharField(
-            _('Post Code'), 
-            max_length=32, 
+            _('Post Code'),
+            max_length=32,
             blank=True
             )
     post_office_box = models.CharField(
@@ -408,18 +408,18 @@ class LocationAwareMicroformat(models.Model):
             blank=True,
             help_text=_(u'degrees decimal, e.g. -122.13855 (±180)')
             )
-    
+
     def adr(self):
         """
         Returns a Unicode string representation of the adr microformat
         associated with this instance.
         """
         result = u', '.join((x for x in (
-            self.street_address, 
+            self.street_address,
             self.extended_address,
-            self.locality, 
-            self.region, 
-            self.country_name and self.get_country_name_display() or self.country_name, 
+            self.locality,
+            self.region,
+            self.country_name and self.get_country_name_display() or self.country_name,
             self.postal_code,
             self.post_office_box,
             ) if x and x.strip()))
@@ -435,9 +435,9 @@ class LocationAwareMicroformat(models.Model):
         """
         if self.latitude and self.longitude:
             return u' '.join((
-                _('lat'), 
-                str(self.latitude), 
-                _('long'), 
+                _('lat'),
+                str(self.latitude),
+                _('long'),
                 str(self.longitude)
                 ))
         else:
@@ -462,8 +462,8 @@ class hCard(LocationAwareMicroformat):
     companies, organizations, and places, using a 1:1 representation of vCard
     (RFC2426) properties and values in semantic HTML or XHTML. hCard is one of
     several open microformat standards suitable for embedding in HTML, XHTML,
-    Atom, RSS, and arbitrary XML. 
-    
+    Atom, RSS, and arbitrary XML.
+
     Field help text is derived from Microformats site. See:
 
     http://microformats.org/wiki/hcard-singular-properties
@@ -504,10 +504,10 @@ class hCard(LocationAwareMicroformat):
             blank=True,
             help_text=_('For recording nickname, handle, username etc...')
             )
-    # A person only has a single physical birthday (reincarnation cannot be 
-    # scientifically substantiated and thus constitues the creation of a new 
-    # directory object rather than the re-birth of an existing object, and 
-    # being 'born again' is not the physical event that 'bday' represents). 
+    # A person only has a single physical birthday (reincarnation cannot be
+    # scientifically substantiated and thus constitues the creation of a new
+    # directory object rather than the re-birth of an existing object, and
+    # being 'born again' is not the physical event that 'bday' represents).
     # Thus 'bday' is singular.
     bday = models.DateField(
             _('Date of Birth'),
@@ -535,7 +535,7 @@ class hCard(LocationAwareMicroformat):
             null=True,
             blank=True
             )
-    # The 'rev' property represents the datetime of the last revision 
+    # The 'rev' property represents the datetime of the last revision
     rev = models.DateTimeField(
             _('Revision'),
             auto_now=True,
@@ -617,7 +617,7 @@ class hCard(LocationAwareMicroformat):
 
         An entity has only one "best" / most preferred way of formatting their
         name, and legally organizations have only a single name, thus "fn" is
-        singular. 
+        singular.
         """
         name = self.n()
         if not name:
@@ -637,7 +637,7 @@ class hCard(LocationAwareMicroformat):
 
 class hCalendar(LocationAwareMicroformat):
     """
-    Represents an hCalendar Microformat. 
+    Represents an hCalendar Microformat.
 
     See:
 
@@ -646,7 +646,7 @@ class hCalendar(LocationAwareMicroformat):
     hCalendar is a simple, open, distributed calendaring and events format,
     based on the iCalendar standard (RFC2445), suitable for embedding in HTML or
     XHTML, Atom, RSS, and arbitrary XML. hCalendar is one of several open
-    microformat standards. 
+    microformat standards.
     """
     summary = models.CharField(
             _('Summary'),
@@ -715,10 +715,10 @@ class hListing(LocationAwareMicroformat):
     hListing is a proposal for an open, distributed listings (UK English:
     small-ads; classifieds) format suitable for embedding in (X)HTML, Atom, RSS,
     and arbitrary XML. hListing would be one of several microformats open
-    standards. 
+    standards.
 
     If hReview is about an item and what you think of it, hListing is about an
-    item and what you want to do with it. 
+    item and what you want to do with it.
 
     For more information see:
 
@@ -853,33 +853,33 @@ class hReview(LocationAwareMicroformat):
             blank=True,
             help_text=_('To serve as a title for the review.')
             )
-    # This optional field contains the full text representing the 
-    # written opinion of the reviewer. The field may include valid HTML markup 
-    # (e.g. paragraphs). User agents should preserve any markup. Multiple 
-    # descriptions or section descriptions (e.g. pros and cons, plusses and 
+    # This optional field contains the full text representing the
+    # written opinion of the reviewer. The field may include valid HTML markup
+    # (e.g. paragraphs). User agents should preserve any markup. Multiple
+    # descriptions or section descriptions (e.g. pros and cons, plusses and
     # minusses) should be included in the description field.
     description = models.TextField(
             _('Description'),
             blank=True
             )
-    # The rating is a fixed point integer (one decimal point of precision) 
+    # The rating is a fixed point integer (one decimal point of precision)
     # from 1 to 5 inclusive indicating a rating for the item, higher
-    # indicating a better rating by default. 
+    # indicating a better rating by default.
     rating = models.IntegerField(
             _('Rating'),
             choices=RATINGS,
             help_text=_('1 = worst, 5 = best')
             )
-    # This optional field when present must provide an ISO8601 
-    # absolute date time of when the review was written or otherwise authored. 
+    # This optional field when present must provide an ISO8601
+    # absolute date time of when the review was written or otherwise authored.
     dtreviewed = models.DateTimeField(
             _('Date of Review'),
             null=True,
             blank=True
             )
-    # The optional field specifies the person who authored the review. 
-    # If the reviewer is specified, an hCard representing the reviewer must be 
-    # provided. For anonymous reviews, use "anonymous" (without quotes) for the 
+    # The optional field specifies the person who authored the review.
+    # If the reviewer is specified, an hCard representing the reviewer must be
+    # provided. For anonymous reviews, use "anonymous" (without quotes) for the
     # full name of the reviewer.
     reviewer = models.CharField(
             _('Reviewer Name'),
@@ -887,8 +887,8 @@ class hReview(LocationAwareMicroformat):
             default=_('Anonymous'),
             help_text=_('Defaults to "Anonymous" if not supplied')
             )
-    # This optional field "type" provides the type of the item being 
-    # reviewed, one of the following: product, business, event, person, place, 
+    # This optional field "type" provides the type of the item being
+    # reviewed, one of the following: product, business, event, person, place,
     # website, url.
     # Nota Bene: I (ntoll) have added the following types to the choices list:
     # book, film, music, software.
@@ -942,7 +942,7 @@ class hReview(LocationAwareMicroformat):
             choices=TIMEZONE,
             help_text=_("Hour(s) from GMT")
             )
-    
+
     class Meta:
         verbose_name = _('hReview')
         verbose_name_plural = _('hReviews')
@@ -962,7 +962,7 @@ class geo(models.Model):
     coordinates (latitude; longitude), suitable for embedding in HTML or XHTML,
     Atom, RSS, and arbitrary XML. geo is a 1:1 representation of the "geo"
     property in the vCard standard (RFC2426) in HTML, one of several open
-    microformat standards. 
+    microformat standards.
     """
 
     latitude = models.FloatField(
@@ -993,7 +993,7 @@ class geo(models.Model):
     def __unicode__(self):
         return u' '.join((
             u'lat',
-            str(self.latitude), 
+            str(self.latitude),
             u'long',
             str(self.longitude)
             ))
@@ -1061,7 +1061,7 @@ class xfn(models.Model):
     indicate their relationship(s) to the people in their blogrolls simply by
     adding a 'rel' attribute to their <a href> tags, e.g.:
 
-    <a href="http://jeff.example.org" rel="friend met">... 
+    <a href="http://jeff.example.org" rel="friend met">...
     """
     # The person who is indicating the relationship - must be a user of the
     # application
@@ -1080,7 +1080,7 @@ class xfn(models.Model):
             )
     # The type of relationship
     relationships = models.ManyToManyField(xfn_values)
-    
+
     class Meta:
         verbose_name = _('XFN')
         verbose_name_plural = _('XFN definitions')
@@ -1090,7 +1090,7 @@ class xfn(models.Model):
         if vals:
             return self.target+u' ('+vals+u')'
         else:
-            return self.target 
+            return self.target
 
 class hFeed(models.Model):
     """
@@ -1138,21 +1138,21 @@ class hEntry(models.Model):
 
     # An Entry Title element represents the concept of an Atom entry title
     # The "atom:title" element is a Text construct that conveys a human-readable
-    # title for an entry or feed. 
+    # title for an entry or feed.
     entry_title = models.TextField(
             _("Entry Title"),
             help_text=_('Title for the entry.')
             )
     # An Entry Content element represents the concept of an Atom content
     # The "atom:content" element either contains or links to the content of the
-    # entry. The content of atom:content is Language-Sensitive. 
+    # entry. The content of atom:content is Language-Sensitive.
     entry_content = models.TextField(
             _('Content'),
             blank=True
             )
     # An Entry Summary element represents the concept of an Atom summary
     # The "atom:summary" element is a Text construct that conveys a short
-    # summary, abstract, or excerpt of an entry. 
+    # summary, abstract, or excerpt of an entry.
     entry_summary = models.TextField(
             _('Summary'),
             blank=True
@@ -1167,7 +1167,7 @@ class hEntry(models.Model):
             )
     # An Entry Published element represents the concept of Atom published
     # The "atom:published" element is a Date construct indicating an instant in
-    # time associated with an event early in the life cycle of the entry. 
+    # time associated with an event early in the life cycle of the entry.
     published = models.DateTimeField(
             _('Published on'),
             null=True,
@@ -1202,7 +1202,7 @@ class hEntry(models.Model):
 
     def __unicode__(self):
         return u"%s: %s (%s)"%(
-                self.entry_title, 
+                self.entry_title,
                 self.author,
                 self.updated.strftime('%c')
                 )
@@ -1214,14 +1214,14 @@ class hNews(hEntry, LocationAwareMicroformat):
     hNews is a microformat that expands the hAtom standard represented by
     the hEntry mondel so it is better suited for journalistic content.
 
-    It was originated by The Associated Press and Media Standards Trust 
+    It was originated by The Associated Press and Media Standards Trust
     and first published as a draft in Fall 2009.
 
     For more information see:
 
     http://microformats.org/wiki/hnews
     """
-    # Source Organization represents the originating organization for the news story. 
+    # Source Organization represents the originating organization for the news story.
     source_org = models.TextField(
             _('Source organization')
             )
@@ -1230,7 +1230,7 @@ class hNews(hEntry, LocationAwareMicroformat):
             verify_exists=False,
             blank=True
             )
-    # principles represents the statement of principles and ethics used by the news 
+    # principles represents the statement of principles and ethics used by the news
     # organization that produced the news story.
     principles_url = models.URLField(
             _('Link to statement of principles'),
@@ -1262,7 +1262,7 @@ class hNews(hEntry, LocationAwareMicroformat):
 
     def __unicode__(self):
         return u"%s: %s (%s)"%(
-                self.entry_title, 
+                self.entry_title,
                 self.source_org,
                 self.updated.strftime('%c')
                 )
@@ -1273,8 +1273,8 @@ class hNews(hEntry, LocationAwareMicroformat):
         the story originated
         """
         result = u', '.join((x for x in (
-            self.locality, 
-            self.country_name and self.get_country_name_display() or self.country_name, 
+            self.locality,
+            self.country_name and self.get_country_name_display() or self.country_name,
             ) if x and x.strip()))
         if result:
             return result
@@ -1329,8 +1329,8 @@ class HCardManager(models.Manager):
 
     def create_person(self, *args, **kwargs):
         """
-        return a newly created hCardComplete model that represents an individual.
-        The individual may or may not have an associated org.
+        return a newly created hCardComplete model that represents an
+        individual. The individual may or may not have an associated org.
         """
         return self.create(*args, **kwargs)
 
@@ -1350,7 +1350,7 @@ class HCardManager(models.Manager):
 
 
 class hCardComplete(models.Model):
-    """ 
+    """
     A full (correct) representation an hCard microformat.
 
     See:
@@ -1364,8 +1364,8 @@ class hCardComplete(models.Model):
     companies, organizations, and places, using a 1:1 representation of vCard
     (RFC2426) properties and values in semantic HTML or XHTML. hCard is one of
     several open microformat standards suitable for embedding in HTML, XHTML,
-    Atom, RSS, and arbitrary XML. 
-    
+    Atom, RSS, and arbitrary XML.
+
     Field help text is derived from Microformats site. See:
 
     http://microformats.org/wiki/hcard-singular-properties
@@ -1406,10 +1406,10 @@ class hCardComplete(models.Model):
             blank=True,
             help_text=_('For recording nicknames, handles, usernames etc...')
             )
-    # A person only has a single physical birthday (reincarnation cannot be 
-    # scientifically substantiated and thus constitues the creation of a new 
-    # directory object rather than the re-birth of an existing object, and 
-    # being 'born again' is not the physical event that 'bday' represents). 
+    # A person only has a single physical birthday (reincarnation cannot be
+    # scientifically substantiated and thus constitues the creation of a new
+    # directory object rather than the re-birth of an existing object, and
+    # being 'born again' is not the physical event that 'bday' represents).
     # Thus 'bday' is singular.
     bday = models.DateField(
             _('Date of Birth'),
@@ -1417,7 +1417,7 @@ class hCardComplete(models.Model):
             blank=True
             )
     geo = models.ForeignKey(
-            geo, 
+            geo,
             null=True,
             blank=True,
             help_text=_("The 'geo' property represents the contact's actual"\
@@ -1448,7 +1448,7 @@ class hCardComplete(models.Model):
             )
     # The "uid" property is a globally unique identifier corresponding to the
     # individual or resource associated with the hCard. It doesn't make sense
-    # for an hCard to have more than one "uid". 
+    # for an hCard to have more than one "uid".
     uid = models.CharField(
             _('UID'),
             max_length=128,
@@ -1478,12 +1478,22 @@ class hCardComplete(models.Model):
             help_text=_("Last revised on")
             )
     # Specifies information about other contact(s) acting on behalf of the
-    # entity represented by the hCard 
+    # entity represented by the hCard
     agents = models.ManyToManyField(
             "self",
             symmetrical=False,
             blank=True
             )
+
+    def is_org(self):
+        """
+        Return True if this hCard instance is considered an Organization.
+        """
+        name = self.n()
+        if (name and name is not u''):
+            return False
+        else:
+            return True
 
     def n(self):
         """
@@ -1520,7 +1530,7 @@ class hCardComplete(models.Model):
 
         A person has only one "best" / most preferred way of formatting their
         name, and legally organizations have only a single name, thus "fn" is
-        singular. 
+        singular.
         """
         result = u''
         if is_org:
@@ -1557,7 +1567,7 @@ class adr_type(models.Model):
     Represents a type of adr Microformat
 
     See:
-    
+
     http://microformats.org/wiki/hcard#adr_tel_email_types
 
     Also see: http://www.ietf.org/rfc/rfc2426.txt (quoted below)
@@ -1598,9 +1608,9 @@ class adr_type(models.Model):
         return self.get_name_display()
 
 class adr(models.Model):
-    """ 
+    """
     Represents an adr Microformat.
-    
+
     See:
 
     http://microformats.org/wiki/adr
@@ -1609,7 +1619,7 @@ class adr(models.Model):
     up address information, suitable for embedding in HTML, XHTML, Atom, RSS,
     and arbitrary XML. adr is a 1:1 representation of the adr property in the
     vCard standard (RFC2426) in HTML, one of several open microformat standards.
-    It is also a property of hCard. 
+    It is also a property of hCard.
     """
     country_name = models.CharField(
             _('Country'),
@@ -1623,28 +1633,28 @@ class adr(models.Model):
             blank=True
             )
     street_address = models.CharField(
-            _('Street Address'), 
-            max_length=128, 
+            _('Street Address'),
+            max_length=128,
             blank=True
-            ) 
+            )
     extended_address = models.CharField(
-            _('Extended Address'), 
-            max_length=128, 
+            _('Extended Address'),
+            max_length=128,
             blank=True
             )
     locality = models.CharField(
-            _('Town / City'), 
-            max_length=128, 
+            _('Town / City'),
+            max_length=128,
             blank=True
             )
     region = models.CharField(
-            _('County / State'), 
-            max_length=128, 
+            _('County / State'),
+            max_length=128,
             blank=True
             )
     postal_code = models.CharField(
-            _('Post Code'), 
-            max_length=32, 
+            _('Post Code'),
+            max_length=32,
             blank=True
             )
 
@@ -1654,14 +1664,14 @@ class adr(models.Model):
     class Meta:
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
-    
+
     def __unicode__(self):
          result = u', '.join((x for x in (
-            self.street_address, 
+            self.street_address,
             self.extended_address,
-            self.locality, 
-            self.region, 
-            self.get_country_name_display(), 
+            self.locality,
+            self.region,
+            self.get_country_name_display(),
             self.postal_code,
             self.post_office_box) if x.strip()))
          if result:
@@ -1670,7 +1680,7 @@ class adr(models.Model):
              return _('None')
 
 class tel_type(models.Model):
-    """ 
+    """
     Represents a type of telephone number in the hCard microformat.
 
     See:
@@ -1680,7 +1690,7 @@ class tel_type(models.Model):
     Also see: http://www.ietf.org/rfc/rfc2426.txt (quoted below)
 
     The type parameter values can include:
-    
+
     "home" to indicate a telephone number associated with a residence,
     "msg" to indicate the telephone number has voice messaging support,
     "work" to indicate a telephone number associated with a place of
@@ -1691,7 +1701,7 @@ class tel_type(models.Model):
     indicate a paging device telephone number, "bbs" to indicate a
     bulletin board system telephone number, "modem" to indicate a
     MODEM connected telephone number, "car" to indicate a car-phone telephone
-    number, "isdn" to indicate an ISDN service telephone number, "pcs" to 
+    number, "isdn" to indicate an ISDN service telephone number, "pcs" to
     indicate a personal communication services telephone number. The
     default type is "voice". These type parameter values can be specified
     as a parameter list (i.e., "TYPE=work;TYPE=voice") or as a value list
@@ -1729,7 +1739,7 @@ class tel_type(models.Model):
     class Meta:
         verbose_name = _('Telephone Type')
         verbose_name_plural = _('Telephone Types')
-    
+
     def __unicode__(self):
         return self.get_name_display()
 
@@ -1740,7 +1750,7 @@ class tel(models.Model):
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     # A telephone number can have more than one type. e.g. pref, home, voice
@@ -1754,10 +1764,10 @@ class tel(models.Model):
     class Meta:
         verbose_name = _('Telephone Number')
         verbose_name_plural = _('Telephone Numbers')
-    
+
     def __unicode__(self):
         return self.value
-    
+
 class email_type(models.Model):
     """
     Represents a type of email in the hCard microformat.
@@ -1768,12 +1778,12 @@ class email_type(models.Model):
 
     Also see: http://www.ietf.org/rfc/rfc2426.txt (quoted below)
 
-    Used to specify the format or preference of the electronic mail address. 
+    Used to specify the format or preference of the electronic mail address.
     The TYPE parameter values can include: "internet" to indicate an Internet
     addressing type, "x400" to indicate a X.400 addressing type or "pref"
     to indicate a preferred-use email address when more than one is
     specified. Another IANA registered address type can also be
-    specified. The default email type is "internet". A non-standard value 
+    specified. The default email type is "internet". A non-standard value
     can also be specified.
 
     """
@@ -1806,7 +1816,7 @@ class email(models.Model):
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     # An email address can have more than one type (but won't usually)
@@ -1816,11 +1826,11 @@ class email(models.Model):
             max_length=64,
             help_text=_('(e.g. john.smith@company.com)')
             )
-    
+
     class Meta:
         verbose_name = _('Email Address')
         verbose_name_plural = _('Email Addresses')
-    
+
     def __unicode__(self):
         return self.value
 
@@ -1831,7 +1841,7 @@ class photo(models.Model):
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     image = models.ImageField(upload_to='hcardphoto')
@@ -1850,7 +1860,7 @@ class logo(models.Model):
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     image = models.ImageField(upload_to='hcardlogo')
@@ -1869,7 +1879,7 @@ class sound(models.Model):
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     recording = models.FileField(upload_to='hcardsounds')
@@ -1883,13 +1893,13 @@ class sound(models.Model):
 
 class title(models.Model):
     """
-    Represents a title a person has at the referenced organization associated 
+    Represents a title a person has at the referenced organization associated
     with an hCard microformat instance
 
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     name = models.CharField(
@@ -1903,17 +1913,17 @@ class title(models.Model):
         verbose_name_plural = _('Title')
 
     def __unicode__(self):
-        return self.name 
+        return self.name
 
 class role(models.Model):
     """
-    Represents the role a person plays within the organization associated with 
+    Represents the role a person plays within the organization associated with
     an hCard microformat instance
 
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     description = models.CharField(
@@ -1932,13 +1942,13 @@ class role(models.Model):
 
 class note(models.Model):
     """
-    Represents supplemental information or a comment associated with an hCard 
+    Represents supplemental information or a comment associated with an hCard
     microformat instance
 
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     content = models.TextField(_('Note'))
@@ -1949,16 +1959,16 @@ class note(models.Model):
 
     def __unicode__(self):
         return self.content
-    
+
 class key(models.Model):
     """
-    Represents a public key or authentication certificate associated with an 
+    Represents a public key or authentication certificate associated with an
     hCard microformat instance
 
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     name = models.TextField(
@@ -1976,13 +1986,13 @@ class key(models.Model):
 
 class mailer(models.Model):
     """
-    Represents the type of electronic mail software that is used by the entity 
+    Represents the type of electronic mail software that is used by the entity
     associated with an hCard microformat instance
 
     See:
 
     http://microformats.org/wiki/hcard
-    
+
     """
     hcard = models.ForeignKey(hCardComplete)
     name = models.CharField(

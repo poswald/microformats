@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-Model tests for Microformats 
+Model tests for Microformats
 
 Author: Nicholas H.Tollervey
 
@@ -18,7 +18,7 @@ from microformats.models import *
 
 class ModelTestCase(TestCase):
         """
-        Testing Models 
+        Testing Models
         """
         # Reference fixtures here
         fixtures = []
@@ -59,7 +59,7 @@ class ModelTestCase(TestCase):
             hc.family_name = 'Blogs'
             self.assertEquals('Mr Joe Arthur Blogs PhD', hc.fn())
             # Make sure we don't let whitespace or empty into the result of n()
-            hc.honorific_prefix = """       
+            hc.honorific_prefix = """
             """ # some spaces, tabs and a newline
             hc.honorific_suffix = '' # empty
             hc.save()
@@ -123,7 +123,7 @@ class ModelTestCase(TestCase):
                     ' PO Box 6754'
             self.assertEquals(expected, a.__unicode__())
             # Lets check we ignore whitespace and empty fields
-            a.post_office_box = """    
+            a.post_office_box = """
                 """ # whitespace of various sorts
             a.extended_address = '' # empty
             expected = 'Flat 29a, Townsville, Countyshire, United Kingdom,'\
@@ -131,7 +131,7 @@ class ModelTestCase(TestCase):
             self.assertEquals(expected, a.__unicode__())
 
         def test_org(self):
-            """ 
+            """
             Make sure the string representation of the organization looks correct
             """
             hc = hCardComplete()
@@ -170,7 +170,7 @@ class ModelTestCase(TestCase):
             tgt = 'Nicholas Tollervey'
             x = xfn()
             x.source = u
-            x.target = tgt 
+            x.target = tgt
             x.save()
             xfnv1 = xfn_values.objects.get(value='friend')
             xfnv2 = xfn_values.objects.get(value='met')
