@@ -104,10 +104,10 @@ class ModelTestCase(TestCase):
             self.assertEquals('Acme Corp.', hc.fn())
             o.delete()
             o2.delete()
-            self.assertEquals('None', hc.fn())
+            self.assertEquals(None, hc.fn())
 
         def test_adr(self):
-            """ 
+            """
             Make sure the string representation of the address looks correct
             """
             a = adr()

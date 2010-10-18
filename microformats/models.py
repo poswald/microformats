@@ -1516,7 +1516,7 @@ class hCardComplete(models.Model):
         Use is_org=True to use organization name if this hCard represents an
         organization. Otherwise this method returns self.n(). If self.n()
         returns nothing then an attempt is made to return an org. If all else
-        fails returns 'None'
+        fails returns None
 
         A person has only one "best" / most preferred way of formatting their
         name, and legally organizations have only a single name, thus "fn" is
@@ -1540,7 +1540,7 @@ class hCardComplete(models.Model):
         if result:
             return result
         else:
-            return _('None')
+            return None
 
     # set a manager for create convienience methods
     objects = HCardManager()
@@ -1550,7 +1550,7 @@ class hCardComplete(models.Model):
         verbose_name_plural = _('hCards')
 
     def __unicode__(self):
-        return self.fn()
+        return self.fn() or _('Unnamed')
 
 class adr_type(models.Model):
     """
