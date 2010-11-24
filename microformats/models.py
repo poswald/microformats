@@ -1851,7 +1851,7 @@ class photo(models.Model):
         verbose_name_plural = _('Photos')
 
     def __unicode__(self):
-        return _('Photo for hCard')
+	return u"%s : %s" % (_('Photo for hCard'), self.hcard.fn())
 
 class logo(models.Model):
     """
@@ -1870,7 +1870,7 @@ class logo(models.Model):
         verbose_name_plural = _('Logos')
 
     def __unicode__(self):
-        return _('Logo for hCard')
+        return u"%s : %s" % (_('Logo for hCard'), self.hcard.fn())
 
 class sound(models.Model):
     """
@@ -1889,7 +1889,7 @@ class sound(models.Model):
         verbose_name_plural = _('Sounds')
 
     def __unicode__(self):
-        return _('Sound for hCard')
+	return u"%s : %s" % (_('Sound for hCard'), self.hcard.fn())
 
 class title(models.Model):
     """
