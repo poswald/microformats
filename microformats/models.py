@@ -1344,8 +1344,9 @@ class HCardManager(models.Manager):
             raise AttributeError
 
         hcard = self.model()
-        o = org(name=name, hcard=hcard)
         hcard.save()
+        o = org(name=name, hcard=hcard)
+        o.save()
         return hcard
 
 
