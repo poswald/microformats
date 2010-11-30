@@ -311,7 +311,6 @@ COUNTRY_LIST = (
         ('UA', _('Ukraine')),
         ('AE', _('United Arab Emirates')),
         ('UY', _('Uruguay')),
-        ('MIL', _('USA Military')),
         ('UM', _('USA Minor Outlying Islands')),
         ('UZ', _('Uzbekistan')),
         ('VU', _('Vanuatu')),
