@@ -1561,7 +1561,7 @@ class hCardComplete(models.Model):
         verbose_name_plural = _('hCards')
 
     def __unicode__(self):
-        return self.fn() or _('Unnamed')
+        return unicode(self.fn()) or _('Unnamed')
 
 class adr_type(models.Model):
     """
