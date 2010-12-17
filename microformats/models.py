@@ -1333,7 +1333,7 @@ class HCardManager(models.Manager):
         """
         return self.create(*args, **kwargs)
 
-    def create_org(self, name=None, *args, **kwargs):
+    def create_org(self, name=None, primary=True, *args, **kwargs):
         """
         return a newly created hCardComplete model. This card will represent an
         organization and will have a corresponding org model. In this method,
@@ -1344,7 +1344,7 @@ class HCardManager(models.Manager):
 
         hcard = self.model()
         hcard.save()
-        o = org(name=name, hcard=hcard)
+        o = org(name=name, hcard=hcard, primary=primary)
         o.save()
         return hcard
 
