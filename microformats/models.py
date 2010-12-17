@@ -1351,7 +1351,7 @@ class HCardManager(models.Manager):
 
 class hCardComplete(models.Model):
     """
-    A full (correct) representation an hCard microformat.
+    A full (normalized) representation an hCard microformat.
 
     See:
 
@@ -1485,15 +1485,58 @@ class hCardComplete(models.Model):
             blank=True
             )
 
+    def _individual_name(self):
+        """
+        Returns all of the fields that make up an individual's name.
+        """
+        name = u' '.join((i for i in (
+            self.given_name,
+            self.additional_name,
+            self.family_name) if i.strip()))
+        if name:
+            return u' '.join((i for i in(
+                self.honorific_prefix,
+                name,
+                self.honorific_suffix) if i.strip()))
+        return unicode(name)
+
+
     def is_org(self):
         """
-        Return True if this hCard instance is considered an Organization.
+        Return True if this hCard instance is considered an Organization. We use
+        the presence of the fields that make up the `n` property to determine
+        this because it is safer than the rules ordered by the spec (only access
+        this table) and yet comes to the same conclusion: Names are required
+        for people hCards; `orgs` have their own name property and will not have
+        values in the `name` fields
+
+        As per the spec:
+
+        "Organization Contact Info:
+
+        If the "FN" and "ORG" (organization) properties have the exact same
+        value (typically because they are set on the same element, e.g.
+        class="fn org"), then the hCard represents contact information for a
+        company, organization or place and should be treated as such. In this
+        case the author also must not set the "N" property, or set it (and any
+        sub-properties) explicitly to the empty string "". Thus parsers should
+        handle the missing "N" property, in this case by implying empty values
+        for all the "N" sub-properties."
+
+        "Implied "organization-name" Optimization
+
+        The "ORG" property has two subproperties, organization-name and
+        organization-unit. Very often authors only publish the
+        organization-name. Thus if an "ORG" property has no "organization-name"
+        inside it, then its entire contents must be treated as the
+        "organization-name".
         """
-        name = self.n()
+        name = self._individual_name()
         if (name and name is not u''):
             return False
         else:
             return True
+
 
     def n(self):
         """
@@ -1506,20 +1549,14 @@ class hCardComplete(models.Model):
         Legal precedents afford a person a single given-name (with multiple
         additional-name(s)) and single family-name, thus, only a single "n"
         property is permitted.
-        """
-        name = u' '.join((i for i in (
-            self.given_name,
-            self.additional_name,
-            self.family_name) if i.strip()))
-        if name:
-            return u' '.join((i for i in(
-                self.honorific_prefix,
-                name,
-                self.honorific_suffix) if i.strip()))
-        else:
-            return u''
 
-    def fn(self, is_org=False):
+        In the case where the hCard is an org, this will be None or an
+        empty string.
+        """
+        name = self._individual_name()
+        return name
+
+    def fn(self):
         """
         Formatted Name
 
@@ -1531,26 +1568,24 @@ class hCardComplete(models.Model):
         A person has only one "best" / most preferred way of formatting their
         name, and legally organizations have only a single name, thus "fn" is
         singular.
+
         """
         result = u''
-        if is_org:
+        if self.is_org():
             o = self.org_set.filter(primary=True).order_by('id')
-            if o:
-                result = o[0].__unicode__()
+            if o.exists():
+                # There was at least one primary org
+                result = u"%s" % (o.all()[0],)
             else:
-                result = self.n()
+                # There was no primary org. Return the first one instead
+                o = self.org_set.order_by('id')
+                if o.exists():
+                    result = u"%s" % (o.all()[0],)
+                else:
+                    result = None
         else:
             result = self.n()
-            if not result:
-                # check we have an organization we should use instead
-                o = self.org_set.filter(primary=True).order_by('id')
-                if o:
-                    result = o[0].__unicode__()
-
-        if result:
-            return result
-        else:
-            return None
+        return result
 
     # set a manager for create convienience methods
     objects = HCardManager()

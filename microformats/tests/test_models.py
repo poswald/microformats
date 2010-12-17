@@ -47,40 +47,60 @@ class ModelTestCase(TestCase):
             hc.honorific_suffix = 'PhD'
             hc.save()
             self.assertEquals('Mr Joe Arthur Blogs PhD', hc.n())
+
             # Make sure we get a useful name back *NOT* "Mr PhD"
             hc.given_name = ''
             hc.additional_name = ''
             hc.family_name = ''
             hc.save()
             self.assertEquals('', hc.n())
-            # Make sure fn() returns the same as n() if is_org isn't passed
+
+            # Make sure fn() returns the same as n() when not an org
             hc.given_name = 'Joe'
             hc.additional_name = 'Arthur'
             hc.family_name = 'Blogs'
             self.assertEquals('Mr Joe Arthur Blogs PhD', hc.fn())
+
             # Make sure we don't let whitespace or empty into the result of n()
             hc.honorific_prefix = """
             """ # some spaces, tabs and a newline
             hc.honorific_suffix = '' # empty
             hc.save()
             self.assertEquals('Joe Arthur Blogs', hc.n())
-            # Lets add an organization to the hCard
+
+            # Lets add an organization to the hCard. According to the spec, this
+            # still represents a person's card. It just also happens to list an
+            # organization
             o = org()
             o.hcard = hc
             o.name = 'Acme Corp.'
             o.unit = 'Widget Development'
             o.primary = True
             o.save()
-            self.assertEquals('Widget Development, Acme Corp.',
-                    hc.fn(is_org=True))
+            self.assertEquals('Joe Arthur Blogs', hc.fn())
+            self.assertEquals(False, hc.is_org())
             o.unit = ''
             o.save()
-            self.assertEquals('Acme Corp.', hc.fn(is_org=True))
+            self.assertEquals('Joe Arthur Blogs', hc.fn())
+            self.assertEquals(False, hc.is_org())
             o.primary = False
             o.save()
-            # If we don't have an organization by do have some name information
+
+            # Now change the name of the hCard to the org name and it should
+            # represent an organization because 'name' and 'org' match. We will
+            # do this by blanking out the name information
+            hc.honorific_prefix = ''
+            hc.given_name = ''
+            hc.additional_name = ''
+            hc.family_name = ''
+            hc.honorific_suffix = ''
+            hc.save()
+            self.assertEquals('Acme Corp.', hc.fn())
+            self.assertEquals(o.name, hc.fn())
+            self.assertEquals(True, hc.is_org())
+
+            # If we don't have an organization but do have some name information
             # then fall back on that
-            self.assertEquals('Joe Arthur Blogs', hc.fn(is_org=True))
             o2 = org()
             o2.hcard = hc
             o2.name = 'Mega Corp.'
@@ -89,12 +109,11 @@ class ModelTestCase(TestCase):
             o2.save()
             o.primary = True
             o.save()
+
             # check that two organizations marked as primary doesn't result in
             # an error
-            self.assertEquals('Acme Corp.', hc.fn(is_org=True))
-            # Check that despite being associated with an organization fn()
-            # doesn't return it if is_org isn't passed
-            self.assertEquals('Joe Arthur Blogs', hc.fn())
+            self.assertEquals('Acme Corp.', hc.fn())
+
             # Finally, make sure we get something sensible if nothing else is
             # available for fn() to create something
             # No name information so fall back on organization
