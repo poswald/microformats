@@ -83,7 +83,6 @@ TIMEZONE = (
 
 # A list of all countries stored as (('ISO 3166'), ('Name'))
 COUNTRY_LIST = (
-        ('',_('--- Please Select ---')),
         ('GB', _('United Kingdom')),
         ('US', _('United States')),
         ('CA', _('Canada')),
